@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-export default({
+export default ({
     state: {
         id: "",
         username: "",
@@ -12,75 +12,75 @@ export default({
     getters: {
     },
     mutations: {
-        updateUser(state, user){
+        updateUser(state, user) {
             state.id = user.id;
             state.username = user.username;
             state.photo = user.photo;
             state.is_login = user.is_login;
         },
-        updateToken(state,token){
+        updateToken(state, token) {
             state.token = token;
         },
-        logout(state){
+        logout(state) {
             state.id = "";
             state.username = "";
             state.photo = "";
             state.token = "";
             state.is_login = false;
         },
-        updatePullingInfo(state, pulling_info){
+        updatePullingInfo(state, pulling_info) {
             state.pulling_info = pulling_info;
         }
     },
     actions: {
-        login(context,data){
+        login(context, data) {
             $.ajax({
-                url: "http://127.0.0.1:3000/user/account/token/",
+                url: "https://linofd.top/api/user/account/token/",
                 type: "post",
-                data:{
-                  username: data.username,
-                  password: data.password,
+                data: {
+                    username: data.username,
+                    password: data.password,
                 },
-                success(resp){
-                  if(resp.error_message === "success"){
-                    localStorage.setItem("jwt_token", resp.token);
-                    context.commit("updateToken", resp.token);
-                    data.success(resp);
-                  }else{
+                success(resp) {
+                    if (resp.error_message === "success") {
+                        localStorage.setItem("jwt_token", resp.token);
+                        context.commit("updateToken", resp.token);
+                        data.success(resp);
+                    } else {
+                        data.error(resp);
+                    }
+                },
+                error(resp) {
                     data.error(resp);
-                  }
-                },
-                error(resp){
-                  data.error(resp);
                 }
             });
         },
-        getinfo(context,data){
+        getinfo(context, data) {
             $.ajax({
-                url: "http://127.0.0.1:3000/user/account/info/",
+                url: "https://linofd.top/api/user/account/info/",
                 type: "get",
                 headers: {
                     Authorization: "Bearer " + context.state.token,
                 },
-                success(resp){
-                    if(resp.error_message === "success"){
-                        context.commit("updateUser",{
+                success(resp) {
+                    if (resp.error_message === "success") {
+                        context.commit("updateUser", {
                             ...resp,
                             is_login: true,
                         });
                         data.success(resp);
-                    }else{
+                    } else {
                         data.error(resp);
                     }
-                    
+
                 },
-                error(resp){
+                error(resp) {
                     data.error(resp);
                 }
 
             });
         },
-        logout(context){
+        logout(context) {
             localStorage.removeItem("jwt_token");
             context.commit("logout");
         }
