@@ -78,7 +78,7 @@ export default{
         const pull_page = page =>{
             current_page = page;
             $.ajax({
-                url: "https://linofd.top/api/ranklist/getlist/",
+                url: "http://127.0.0.1:3000/ranklist/getlist/",
                 data:{
                     page,
                 },

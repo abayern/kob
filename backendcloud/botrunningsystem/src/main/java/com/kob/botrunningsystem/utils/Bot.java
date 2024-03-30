@@ -1,4 +1,4 @@
-package com.kob.botrunningsystem.controller.utils;
+package com.kob.botrunningsystem.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
